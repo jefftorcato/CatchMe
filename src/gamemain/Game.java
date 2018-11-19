@@ -4,6 +4,8 @@
 package gamemain;
 
 import java.awt.Canvas;
+import java.awt.Graphics;
+import java.awt.image.BufferStrategy;
 
 /**
  * @author Spentpillow
@@ -69,6 +71,23 @@ public class Game extends Canvas implements Runnable{
 			}
 		}
 		stop();
+	}
+	
+	private void tick() {
+		
+	}
+	
+	private void render() {
+		BufferStrategy bs = this.getBufferStrategy();
+		if(bs == null) {
+			this.createBufferStrategy(3); 
+			return;
+		}
+		
+		Graphics g = bs.getDrawGraphics();
+		
+		g.dispose();
+		bs.show();
 	}
 	
 	public static void main(String[] args) {
