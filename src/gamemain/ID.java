@@ -2,6 +2,7 @@ package gamemain;
 
 public enum ID {
 
-	Player();
+	Player(),
+	Player2(),
 	Enemy();
 }

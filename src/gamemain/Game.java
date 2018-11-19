@@ -30,13 +30,15 @@ public class Game extends Canvas implements Runnable{
 	 */
 	
 	public Game() {
-		new Window(WIDTH, HEIGHT, "Catch Me", this);
 		handler = new Handler();
+		this.addKeyListener(new KeyInput(handler));
+		
+		new Window(WIDTH, HEIGHT, "Catch Me", this);
 		r= new Random();
 		
-		for(int i=0; i < 50; i++) {
-			handler.addObject(new Player(r.nextInt(WIDTH), r.nextInt(HEIGHT), ID.Player));
-		}
+		handler.addObject(new Player(WIDTH/2-32,HEIGHT/2-32, ID.Player));
+		handler.addObject(new Player(WIDTH/2-64,HEIGHT/2-32, ID.Player2));
+	
 		
 	}
 	
@@ -77,7 +79,7 @@ public class Game extends Canvas implements Runnable{
 			
 			if(System.currentTimeMillis() - timer > 1000) {
 				timer += 1000;
-				System.out.println("FPS: " + frames);
+				//System.out.println("FPS: " + frames);
 				frames = 0;
 			}
 		}
