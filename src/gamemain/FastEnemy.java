@@ -19,7 +19,7 @@ public class FastEnemy extends GameObject{
 	@Override
 	public Rectangle getBounds() {
 		// TODO Auto-generated method stub
-			return new Rectangle(x,y,16,16);
+			return new Rectangle((int)x,(int)y,16,16);
 	}
 	
 	@Override
@@ -38,7 +38,7 @@ public class FastEnemy extends GameObject{
 	public void render(Graphics g) {
 		// TODO Auto-generated method stub
 		g.setColor(Color.CYAN);
-		g.fillRect(x,  y, 16, 16);
+		g.fillRect((int)x, (int)y, 16, 16);
 	}
 
 }
