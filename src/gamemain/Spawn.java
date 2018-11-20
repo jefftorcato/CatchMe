@@ -1,10 +1,13 @@
 package gamemain;
 
+import java.util.Random;
+
 public class Spawn {
 
 	private Handler handler;
 	private HUD hud;
 	private int scorekeep = 0;
+	private Random r = new Random();
 	
 	public Spawn(Handler handler, HUD hud) {
 		this.handler = handler;
@@ -14,9 +17,13 @@ public class Spawn {
 	public void tick() {
 		scorekeep++;
 		
-		if(scorekeep >= 1000) {
+		if(scorekeep >= 100) {
 			scorekeep = 0;
-			hud.setLevel(hud.getLevel() + 1); //Everytime the score becomes 1000 the level increments
+			hud.setLevel(hud.getLevel() + 1); //if the score becomes 1000 the level increments
+		
+			//if(hud.getLevel() == 2) {
+				handler.addObject(new BasicEnemy(r.nextInt(Game.WIDTH), r.nextInt(Game.HEIGHT), ID.BasicEnemy, handler));
+			//}
 		}
 	}
 }
