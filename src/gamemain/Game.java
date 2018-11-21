@@ -27,6 +27,14 @@ public class Game extends Canvas implements Runnable{
 	private Handler handler;
 	private HUD hud;
 	private Spawn spawner;
+	
+	public enum STATE {
+		Menu,
+		Game
+	};
+	
+	public STATE gameState = STATE.Menu;
+	
 	/**
 	 * @param args
 	 */
@@ -41,13 +49,13 @@ public class Game extends Canvas implements Runnable{
 		spawner = new Spawn(handler,hud);
 		r= new Random();
 		
-		handler.addObject(new Player(WIDTH/2-32,HEIGHT/2-32, ID.Player, handler));
-		//handler.addObject(new Player(WIDTH/2-64,HEIGHT/2-32, ID.Player2));
-		handler.addObject(new BasicEnemy(r.nextInt(Game.WIDTH), r.nextInt(Game.HEIGHT), ID.BasicEnemy, handler));
-		
-		
-	
-		
+		if(gameState == STATE.Game) {
+			handler.addObject(new Player(WIDTH/2-32,HEIGHT/2-32, ID.Player, handler));
+			//handler.addObject(new Player(WIDTH/2-64,HEIGHT/2-32, ID.Player2));
+			handler.addObject(new BasicEnemy(r.nextInt(Game.WIDTH), r.nextInt(Game.HEIGHT), ID.BasicEnemy, handler));
+			
+		}
+			
 	}
 	
 	public synchronized void start() {
@@ -97,8 +105,11 @@ public class Game extends Canvas implements Runnable{
 	
 	private void tick() {
 		handler.tick();
-		hud.tick();
-		spawner.tick();
+		if(gameState == STATE.Game) {
+			hud.tick();
+			spawner.tick();
+		}
+
 	}
 	
 	private void render() {
@@ -113,9 +124,15 @@ public class Game extends Canvas implements Runnable{
 		g.setColor(Color.black);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		
-		
 		handler.render(g);
-		hud.render(g);
+		if(gameState == STATE.Game) {
+			hud.render(g);
+		}else {
+			g.setColor(Color.white);
+			g.drawString("Menu", 100, 100);
+		}
+	
+		
 		
 		g.dispose();
 		bs.show();
