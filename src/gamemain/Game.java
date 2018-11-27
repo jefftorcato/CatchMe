@@ -27,13 +27,16 @@ public class Game extends Canvas implements Runnable{
 	private Handler handler;
 	private HUD hud;
 	private Spawn spawner;
+	private Menu menu;
 	
 	public enum STATE {
 		Menu,
-		Game
+		Game,
+		Help,
+		End
 	};
 	
-	public STATE gameState = STATE.Menu;
+	public static STATE gameState = STATE.Menu;
 	
 	/**
 	 * @param args
@@ -41,12 +44,16 @@ public class Game extends Canvas implements Runnable{
 	
 	public Game() {
 		handler = new Handler();
+		hud = new HUD();
+		menu = new Menu(this,hud,handler);
 		this.addKeyListener(new KeyInput(handler));
+		this.addMouseListener(menu);
 		
 		new Window(WIDTH, HEIGHT, "Catch Me", this);
 		
-		hud = new HUD();
+		
 		spawner = new Spawn(handler,hud);
+		
 		r= new Random();
 		
 		if(gameState == STATE.Game) {
@@ -54,6 +61,10 @@ public class Game extends Canvas implements Runnable{
 			//handler.addObject(new Player(WIDTH/2-64,HEIGHT/2-32, ID.Player2));
 			handler.addObject(new BasicEnemy(r.nextInt(Game.WIDTH), r.nextInt(Game.HEIGHT), ID.BasicEnemy, handler));
 			
+		}else {
+			for(int i = 0; i< 20; i++) {
+				handler.addObject(new MenuParticle(r.nextInt(WIDTH), r.nextInt(HEIGHT),ID.MenuParticle,handler));
+			}
 		}
 			
 	}
@@ -108,6 +119,18 @@ public class Game extends Canvas implements Runnable{
 		if(gameState == STATE.Game) {
 			hud.tick();
 			spawner.tick();
+			if(HUD.HEALTH <= 0) {
+				HUD.HEALTH = 100;
+
+				gameState = STATE.End;
+				handler.clearEnemies();
+				for(int i = 0; i< 20; i++) {
+					handler.addObject(new MenuParticle(r.nextInt(WIDTH), r.nextInt(HEIGHT),ID.MenuParticle,handler));
+				}
+				
+			}
+		}else if(gameState == STATE.Menu || gameState == STATE.End) {
+			menu.tick();
 		}
 
 	}
@@ -127,9 +150,8 @@ public class Game extends Canvas implements Runnable{
 		handler.render(g);
 		if(gameState == STATE.Game) {
 			hud.render(g);
-		}else {
-			g.setColor(Color.white);
-			g.drawString("Menu", 100, 100);
+		}else if(gameState == STATE.Menu || gameState == STATE.Help || gameState == STATE.End) {
+			menu.render(g);
 		}
 	
 		
