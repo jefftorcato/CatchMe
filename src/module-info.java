@@ -7,4 +7,5 @@
  */
 module catchMe {
 	requires java.desktop;
+
 }
